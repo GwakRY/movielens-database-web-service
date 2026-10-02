@@ -282,26 +282,6 @@ React에서 FastAPI REST API를 호출해 영화 및 사용자 데이터를 화�
 
 \---
 
-## Suggested Repository Structure
-
-```text
-movielens-database-web-service/
-├── api/
-│   ├── database/
-│   │   └── connector.py
-│   └── movieLens/
-│       ├── controllers.py
-│       ├── models.py
-│       └── routers.py
-├── frontend/
-│   └── src/
-│       └── pages/
-├── movielens\_DDL.sql
-└── README.md
-```
-
-\---
-
 ## Environment Variables
 
 DB 접속 정보는 환경변수에서 읽도록 구성되어 있습니다.
