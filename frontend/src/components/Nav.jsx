@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -8,7 +9,7 @@ const Nav = ({ user, setUser, isloggedIn, setIsLoggedIn }) => {
 
 	const fetchUser = async (userId) => {
 		try {
-			const response = await fetch(`http://localhost:8001/v1/user/${userId}`);
+			const response = await fetch(apiUrl(`/v1/user/${userId}`));
 			const data = await response.json();
 
 			if (response.ok) {

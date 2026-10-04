@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 import React, { useEffect, useState } from 'react';
 
 import MovieList from '../components/MovieList';
@@ -11,7 +12,7 @@ const MovieSearch = () => {
 
 	const fetchMovies = async (query) => {
 		try {
-			const response = await fetch(`http://localhost:8001/v1/search?query=${query}`, {
+			const response = await fetch(apiUrl(`/v1/search?query=${encodeURIComponent(query)}`), {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json'

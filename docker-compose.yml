@@ -1,45 +1,52 @@
-version: "3"
 services:
-    mysql:
-        container_name: mysql
-        platform: linux/x86_64
-        build: ./mysql/
-        ports:
-            - "3307:3306"
-        volumes:
-            - ./mysql/db:/docker-entrypoint-initdb.d
-            - ./mysql/conf.d:/etc/mysql/conf.d
-        env_file:
-            - ./mysql/local.env
-        tty: true
-    api:
-        depends_on:
-            - mysql
-        container_name: fast_api
-        platform: linux/x86_64
-        build:
-            context: ./api
-            dockerfile: dev.Dockerfile
-        restart: unless-stopped
-        tty: true
-        volumes:
-            - ./api:/app
-        ports:
-            - 8001:8000
-        env_file:
-            - ./api/local.env
-    frontend:
-        container_name: frontend
-        platform: linux/x86_64
-        build:
-            context: ./frontend
-            dockerfile: dev.Dockerfile
-        restart: unless-stopped
-        tty: true
-        volumes:
-            - ./frontend:/app
-            - /app/node_modules
-        ports:
-            - 3001:3000
-        env_file:
-            - ./frontend/local.env
+  mysql:
+    build: ./mysql
+    ports:
+      - "127.0.0.1:3307:3306"
+    volumes:
+      - movie_db:/var/lib/mysql
+      - ./mysql/db:/docker-entrypoint-initdb.d:ro
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
+    env_file:
+      - ./mysql/local.env
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          export MYSQL_PWD="$$MYSQL_PASSWORD";
+          mysql --protocol=TCP -h127.0.0.1 -u"$$MYSQL_USER" "$$MYSQL_DATABASE"
+          -e 'SELECT movieId FROM movie LIMIT 1; SELECT userId FROM user LIMIT 1; SELECT ratingId FROM ratings LIMIT 1; SELECT mgenreId FROM movie_genres LIMIT 1;'
+          >/dev/null 2>&1
+      interval: 5s
+      timeout: 5s
+      start_period: 30s
+      retries: 120
+  api:
+    depends_on:
+      mysql:
+        condition: service_healthy
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./api:/app
+    ports:
+      - "127.0.0.1:8001:8000"
+    env_file:
+      - ./api/local.env
+  frontend:
+    depends_on:
+      - api
+    build:
+      context: ./frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "127.0.0.1:3001:3000"
+    env_file:
+      - ./frontend/local.env
+
+volumes:
+  movie_db:
