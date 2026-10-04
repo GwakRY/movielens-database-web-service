@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 import React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -11,7 +12,7 @@ const Home = () => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/movie');
+				const response = await fetch(apiUrl('/v1/movie'));
 				const data = await response.json();
 				setMovies(data);
 			} catch (error) {
@@ -27,7 +28,7 @@ const Home = () => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/user/1/same_age_movies');
+				const response = await fetch(apiUrl('/v1/user/1/same_age_movies'));
 				const data = await response.json();
 				set_age_relatedMovies(data);
 			} catch (error) { }
@@ -41,7 +42,7 @@ const Home = () => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/user/1/same_occupation_movies');
+				const response = await fetch(apiUrl('/v1/user/1/same_occupation_movies'));
 				const data = await response.json();
 				set_occupation_relatedMovies(data);
 			} catch (error) { }
@@ -55,7 +56,7 @@ const Home = () => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/user/1/algorithm_1');
+				const response = await fetch(apiUrl('/v1/user/1/algorithm_1'));
 				const data = await response.json();
 				set_CF_relatedMovies(data);
 			} catch (error) { }
@@ -69,7 +70,7 @@ const Home = () => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/movie/before1950');
+				const response = await fetch(apiUrl('/v1/movie/before1950'));
 				const data = await response.json();
 				set_before1950_relatedMovies(data);
 			} catch (error) { }

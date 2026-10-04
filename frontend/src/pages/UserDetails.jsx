@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 import React, { useEffect, useState } from 'react';
 
 import MovieList from '../components/MovieList';
@@ -10,7 +11,7 @@ const UserDetails = ({ user }) => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch(`http://localhost:8001/v1/user/${user.userId}/rated`);
+				const response = await fetch(apiUrl(`/v1/user/${user.userId}/rated`));
 				const data = await response.json();
 				setMovies(data);
 			} catch (error) {

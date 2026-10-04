@@ -1,3 +1,4 @@
+import { apiUrl } from '../api';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +13,7 @@ const MovieDetails = ({ movieId, user }) => {
 	useEffect(() => {
 		const fetchMovie = async () => {
 			try {
-				var fetchString = `http://localhost:8001/v1/movie/${movieId}`;
+				var fetchString = apiUrl(`/v1/movie/${movieId}`);
 				if (user) { fetchString += `?user_id=${user.userId}`; }
 				const response = await fetch(fetchString);
 				const movie = await response.json();
@@ -30,7 +31,7 @@ const MovieDetails = ({ movieId, user }) => {
 	useEffect(() => {
 		async function fetchMovies() {
 			try {
-				const response = await fetch('http://localhost:8001/v1/movie');
+				const response = await fetch(apiUrl('/v1/movie'));
 				const data = await response.json();
 				setrelatedMovies(data);
 			} catch (error) { }
